@@ -1,25 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment, useState, useEffect } from 'react';
+import Maps from './componentes/Maps';
+import Header from './componentes/Header';
+import Axios from 'axios';
 
 function App() {
+
+  const mapCenter = [ -28.466667, -65.783333 ];
+  const zoom = 14;
+
+  const [ info, updateInfo ] = useState({});
+  const [ allCommerce, updateAllCommerce ] = useState([]);
+
+  useEffect( () => {
+    const comercios = async () => {
+
+      const url = 'https://tarjetafamilia.catamarca.gob.ar/api/v1/commerce/';
+      const resultado = await Axios(url);
+
+      updateAllCommerce(resultado.data.data);
+      
+    }
+    comercios();
+  }, [] );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <Header 
+        updateInfo={ updateInfo }
+      />
+      <div className='container'>
+        <Maps 
+          center={ mapCenter } 
+          zoom={ zoom } 
+          info={ info }
+          allCommerce={ allCommerce }
+        />
+      </div>
+    </Fragment>
   );
 }
 
