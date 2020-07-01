@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Axios from 'axios';
+import PropTypes from 'prop-types';
 
 const Header = ({ updateInfo, updateEnBusqueda }) => {
 
@@ -74,7 +75,7 @@ const Header = ({ updateInfo, updateEnBusqueda }) => {
 const InputText = styled.input`
     flex: 0 0 24%;
     width: 100%;
-    margin: 0 auto;
+    margin: 0 auto .7rem auto;
     padding: 0.5rem;
     border: 1px solid grey;
     border-radius: .7rem;
@@ -83,7 +84,7 @@ const InputText = styled.input`
 const Title = styled.h2`
     flex: 0 0 24%;
     width: 100%;
-    margin: 0 auto;
+    margin: 0 auto .7rem auto;
     font-size: 1.2rem;
     font-weight: 100;
     text-align: center;
@@ -92,7 +93,8 @@ const Title = styled.h2`
 
 const Search = styled.select`
     flex: 0 0 24%;
-    margin: 0 auto;
+    width: 100%;
+    margin: 0 auto .7rem auto;
     padding: 0.5rem;
     border: 1px solid grey;
     border-radius: .7rem;
@@ -100,7 +102,8 @@ const Search = styled.select`
 
 const Boton = styled.button`
     flex: 0 0 24%;
-    max-width: 100%;
+    width: 100%;
+    margin: 0 auto .7rem auto;
     border: none;
     border-radius: .7rem;
     padding: .5rem;
@@ -118,6 +121,7 @@ const Boton = styled.button`
 const Barra = styled.form`
     background: white;
     padding: 0.5rem;
+    padding-top: 1rem;
     margin-bottom: 4rem;
     display: flex;
     flex-direction: column;
@@ -128,5 +132,11 @@ const Barra = styled.form`
         flex-direction: row;
     }
 `;
+
+
+Header.propTypes = {
+    updateInfo: PropTypes.func.isRequired, 
+    updateEnBusqueda: PropTypes.func.isRequired
+}
 
 export default Header;

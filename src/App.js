@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import Maps from './componentes/Maps';
 import Header from './componentes/Header';
 import Axios from 'axios';
+import styled from 'styled-components';
 
 function App() {
 
@@ -43,8 +44,18 @@ function App() {
           allCommerce={ allCommerce }
         />
       </div>
+      <Saludo>Hecho en React para el curso de FrontEnd del Programa para la Inserción Laboral en la Industria del Software con IncluIT, hecho por Cristian Sulbaran &copy;2020</Saludo>
     </Fragment>
   );
 }
+
+const Saludo = styled.p`
+  margin-top: 4rem;
+  color: #fff;
+  font-weight: 100;
+  font-size: .8rem;
+  text-align: center; 
+  text-transform: uppercase;
+`;
 
 export default App;
