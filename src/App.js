@@ -6,27 +6,34 @@ import Axios from 'axios';
 function App() {
 
   const mapCenter = [ -28.466667, -65.783333 ];
-  const zoom = 14;
+  const zoom = 12;
 
   const [ info, updateInfo ] = useState({});
   const [ allCommerce, updateAllCommerce ] = useState([]);
+  const [ enBusqueda, updateEnBusqueda ] = useState(false);
 
   useEffect( () => {
-    const comercios = async () => {
+    if( enBusqueda === false ){
+      const comercios = async () => {
 
       const url = 'https://tarjetafamilia.catamarca.gob.ar/api/v1/commerce/';
       const resultado = await Axios(url);
 
       updateAllCommerce(resultado.data.data);
       
+      }
+      
+      comercios();
+      return;
     }
-    comercios();
-  }, [] );
+    
+  }, [ enBusqueda ] );
 
   return (
     <Fragment>
       <Header 
         updateInfo={ updateInfo }
+        updateEnBusqueda={ updateEnBusqueda }
       />
       <div className='container'>
         <Maps 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Axios from 'axios';
 
-const Header = ({ updateInfo }) => {
+const Header = ({ updateInfo, updateEnBusqueda }) => {
 
     const [ tags, updateTags ] = useState([]);
     const [ name, updateName ] = useState({
@@ -11,7 +11,6 @@ const Header = ({ updateInfo }) => {
     });
 
     const handleChange = e => {
-        if ( e.target.value === '' ) return;
         updateName({
             ...name,
             [ e.target.name ] : e.target.value
@@ -23,6 +22,13 @@ const Header = ({ updateInfo }) => {
         updateInfo({
             ...name
         });
+        if( name.name === '' || name.tags === '') {
+            updateEnBusqueda(false);
+            return;
+        } else {
+            updateEnBusqueda(true);
+            return;
+        }
     }
 
     useEffect( () => {
@@ -39,6 +45,7 @@ const Header = ({ updateInfo }) => {
     return ( 
         <Barra
             onSubmit={ handleSubmit }
+            id='formulario'
         >
             <Title>Comercios en Catamarca</Title>
             <InputText

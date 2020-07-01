@@ -5,29 +5,47 @@ import Axios from 'axios';
 
 const Maps = ({ center, zoom, info, allCommerce }) => {
 
-    const [ filtrado, filtradoUpdate ] = useState(false);
-    const [ comercio, updateComercio ] = useState({});
+    const defMarker = () => {
+    
+        let a;
 
-    useEffect( () => {
-        if( typeof info.name === 'undefined' || typeof info.tags === 'undefined') {
-            filtradoUpdate(false);
-            return;
-        }
-        const llamado = async () => {
-            const url = `https://tarjetafamilia.catamarca.gob.ar/api/v1/commerce/?name=${info.name}&tags=${info.tags}`;
-            const resultado = await Axios(url);
-            console.log(resultado.data.data);
-            updateComercio(resultado.data.data);
-            filtradoUpdate(true);
-        }
-        llamado();
-    }, [ info, allCommerce ] );
+        if( typeof info.name === 'undefined' || info.name === '' || typeof info.tags === 'undefined' || info.tags === '' ) {
+        a = allCommerce.map( comercio => ( //ESTO ESTA BIEN 
+        <Marker 
+            key={ comercio.id }
+            position={ Coordenadas(comercio.attributes) }
+        />
+            ));   
+        return a;    
+    } else {
+        const b = allCommerce.filter( comercio => comercio.attributes.name.toLowerCase().includes((`${info.name}`).toLowerCase()) );
 
-    const Coordenadas = (point) => {
-        if (point !== null) {
-            return [ point.coordinates[1], point.coordinates[0] ];
+        const c = b.filter( comercio => comercio.attributes.tags.indexOf( info.tags ) >= 0  );
+
+        console.log(c);
+        console.log(info.tags === allCommerce[6].attributes.tags[0]);
+        console.log(typeof info.tags);
+        console.log(typeof allCommerce[6].attributes.tags[0]);
+        
+
+        a = c.map( comercio => ( //ESTO ESTA BIEN 
+            <Marker 
+                key={ comercio.id }
+                position={ Coordenadas(comercio.attributes) }
+            />
+                ));   
+            return a; 
+    }
+
+    }
+
+    
+    const Coordenadas = attributes => {
+        
+        if (typeof attributes === 'undefined' || typeof attributes.point === 'undefined' || attributes.point === null) {
+            return [ 0, 0 ];
         } else {
-            return [ 0, 0 ]
+            return [ attributes.point.coordinates[1], attributes.point.coordinates[0] ] ;
         };
       };
 
@@ -41,18 +59,8 @@ const Maps = ({ center, zoom, info, allCommerce }) => {
                 url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'
             />
 
-            { filtrado 
-            ? 
-            <Marker
-                key='1'
-                position={ Coordenadas(comercio[0].attributes.point) }
-            />
-            : allCommerce.filter( comercio => comercio.attributes.point !== null ).map( comercio => (
-                <Marker
-                    key={ comercio.id }
-                    position={ [comercio.attributes.point.coordinates[1], comercio.attributes.point.coordinates[0]] }
-                />
-            ) )  }
+            {defMarker()}
+             
         </Map>
      );
 }
